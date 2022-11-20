@@ -2,7 +2,7 @@
 
 PromptSlover::PromptSlover()
 {
-	// ¼ÓÔØCLIPÄ£ĞÍ
+	// åŠ è½½CLIPæ¨¡å‹
 	net.opt.use_vulkan_compute = false;
 	net.opt.use_winograd_convolution = false;
 	net.opt.use_sgemm_convolution = false;
@@ -13,7 +13,7 @@ PromptSlover::PromptSlover()
 	net.load_param("assets/FrozenCLIPEmbedder-fp16.param");
 	net.load_model("assets/FrozenCLIPEmbedder-fp16.bin");
 
-	// ¶ÁÈ¡tokenizer×Öµä
+	// è¯»å–tokenizerå­—å…¸
 	std::ifstream infile;
 	std::string pathname = "assets/vocab.txt";
 	infile.open(pathname.data());
@@ -29,10 +29,10 @@ PromptSlover::PromptSlover()
 
 ncnn::Mat PromptSlover::get_conditioning(string& prompt)
 {
-	// ÖØÒª¶È¼ÆËã¿ÉÒÔÆ¥Åä¡°()¡±ºÍ¡°[]¡±£¬Ô²À¨ºÅÊÇ¼ÓÖØÒª¶È£¬·½À¨ºÅÊÇ¼õÖØÒª¶È
+	// é‡è¦åº¦è®¡ç®—å¯ä»¥åŒ¹é…â€œ()â€å’Œâ€œ[]â€ï¼Œåœ†æ‹¬å·æ˜¯åŠ é‡è¦åº¦ï¼Œæ–¹æ‹¬å·æ˜¯å‡é‡è¦åº¦
 	vector<pair<string, float>> parsed = parse_prompt_attention(prompt);
 
-	// token×ªids
+	// tokenè½¬ids
 	vector<vector<int>> tokenized;
 	{
 		for (auto p : parsed) {
@@ -45,7 +45,7 @@ ncnn::Mat PromptSlover::get_conditioning(string& prompt)
 		}
 	}
 
-	// Ò»Ğ©´¦Àí
+	// ä¸€äº›å¤„ç†
 	vector<int> remade_tokens;
 	vector<float> multipliers;
 	{
@@ -90,7 +90,7 @@ ncnn::Mat PromptSlover::get_conditioning(string& prompt)
 		multipliers.insert(multipliers.end(), tmp_multipliers.begin(), tmp_multipliers.end());
 	}
 
-	// ÇĞ·Ö
+	// åˆ‡åˆ†
 	ncnn::Mat conds(768, 0);
 	{
 		while (remade_tokens.size() > 0) {

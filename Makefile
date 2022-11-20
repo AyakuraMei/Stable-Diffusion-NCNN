@@ -1,8 +1,8 @@
 # tool macros
-CC := g++
-CFLAGS := -funsafe-math-optimizations -Ofast -flto=auto  -funroll-all-loops -pipe -march=native -std=c++20
+CXX := g++
+CXXFLAGS := -funsafe-math-optimizations -Ofast -flto=auto  -funroll-all-loops -pipe -march=native -std=c++20 -Wall -Wextra
 DBGFLAGS := -g
-COBJFLAGS := $(CFLAGS) -c
+CXXOBJFLAGS := $(CXXFLAGS) -c
 LFLAGS := -lncnn -lstdc++ -pthread -Wl,--gc-sections -flto -fopt-info-vec-optimized
 
 # path macros
@@ -36,16 +36,16 @@ default: makedir all
 
 # non-phony targets
 $(TARGET): $(OBJ)
-	$(CC) -o $@ $(OBJ) $(CFLAGS) $(LFLAGS)
+	$(CXX) -o $@ $(OBJ) $(CXXFLAGS) $(LFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
-	$(CC) $(COBJFLAGS) -o $@ $<
+	$(CXX) $(CXXOBJFLAGS) -o $@ $<
 
 $(DBG_PATH)/%.o: $(SRC_PATH)/%.cpp
-	$(CC) $(COBJFLAGS) $(DBGFLAGS) -o $@ $<
+	$(CXX) $(CXXOBJFLAGS) $(DBGFLAGS) -o $@ $<
 
 $(TARGET_DEBUG): $(OBJ_DEBUG)
-	$(CC) $(CFLAGS) $(DBGFLAGS) $(OBJ_DEBUG) -o $@ $(LFLAGS)
+	$(CXX) $(CXXFLAGS) $(DBGFLAGS) $(OBJ_DEBUG) -o $@ $(LFLAGS)
 
 # phony rules
 .PHONY: makedir

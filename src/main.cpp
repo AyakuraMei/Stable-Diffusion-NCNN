@@ -26,7 +26,7 @@ static inline void save_ppm( std::uint8_t* data, int cols, int rows, char const*
         ofs << 255 << "\n";
         for ( int r = 0; r < rows; ++r )
         {
-            for ( int c = 0; c < cols; ++c )
+            for ( int c = 0; c < cols*3; ++c ) // RGB
             {
                 ofs << static_cast<unsigned long>(data[cols*r+c]) << " ";
             }

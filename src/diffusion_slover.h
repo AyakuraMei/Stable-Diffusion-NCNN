@@ -6,12 +6,12 @@
 #include <stack>
 #include <fstream>
 #include <map>
-#include <math.h>
-#include <net.h>
-#include <opencv2/opencv.hpp>
+#include <cmath>
+//#include <opencv2/opencv.hpp>
 #include <algorithm>
-#include <time.h>
-#include "benchmark.h"
+#include <ctime>
+#include <ncnn/benchmark.h>
+#include <ncnn/net.h>
 using namespace std;
 
 class DiffusionSlover

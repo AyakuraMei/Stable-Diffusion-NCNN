@@ -6,11 +6,11 @@
 #include <stack>
 #include <fstream>
 #include <map>
-#include <math.h>
-#include <net.h>
-#include <opencv2/opencv.hpp>
+#include <cmath>
+#include <ncnn/net.h>
+//#include <opencv2/opencv.hpp>
 #include <algorithm>
-#include <time.h>
+#include <ctime>
 using namespace std;
 
 class DecodeSlover

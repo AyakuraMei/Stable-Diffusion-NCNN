@@ -1,19 +1,44 @@
-﻿#include <iostream>
+#include <iostream>
 #include <regex>
 #include <string>
 #include <vector>
 #include <stack>
 #include <fstream>
 #include <map>
-#include <math.h>
-#include <net.h>
-#include "prompt_slover.h"
-#include "decoder_slover.h"
-#include "diffusion_slover.h"
-#include <opencv2/opencv.hpp>
+#include <cmath>
+#include <ncnn/net.h>
+#include "./prompt_slover.h"
+#include "./decoder_slover.h"
+#include "./diffusion_slover.h"
+//#include <opencv2/opencv.hpp>
 #include <algorithm>
-#include <time.h>
+#include <ctime>
+#include <fstream>
+#include <cstdint>
 using namespace std;
+
+static inline void save_ppm( std::uint8_t* data, int cols, int rows, char const* const file_name )
+{
+    std::ofstream ofs{ file_name };
+    {
+        ofs << "P3\n";
+        ofs << cols << " " << rows << "\n";
+        ofs << 255 << "\n";
+        for ( int r = 0; r < rows; ++r )
+        {
+            for ( int c = 0; c < cols; ++c )
+            {
+                ofs << static_cast<unsigned long>(data[cols*r+c]) << " ";
+            }
+            ofs << "\n";
+        }
+    }
+
+    ofs.close();
+}
+
+
+
 
 int main()
 {
@@ -52,9 +77,17 @@ int main()
 	ncnn::Mat x_samples_ddim = decode_slover.decode(sample);
 
 	cout << "----------------[save]--------------------" << endl;
+    #if 0
 	cv::Mat image(512, 512, CV_8UC3);
 	x_samples_ddim.to_pixels(image.data, ncnn::Mat::PIXEL_RGB2BGR);
 	cv::imwrite("result_" + to_string(step) + "_" + to_string(seed) + ".png", image);
+    #else
+    std::string const& file_name = std::string{"result_"} + to_string(step) + std::string{"_"} + to_string(seed) + std::string{".ppm"};
+    save_ppm( reinterpret_cast<std::uint8_t*>(x_samples_ddim.data), 512, 512, file_name.c_str() );
+    #endif
+
+
+
 
 	cout << "----------------[close]-------------------" << endl;
 	return 0;

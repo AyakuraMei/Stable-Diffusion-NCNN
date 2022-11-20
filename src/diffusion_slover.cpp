@@ -1,4 +1,6 @@
-#include "diffusion_slover.h"
+#include "./diffusion_slover.h"
+#include <random>
+#include <vector>
 
 DiffusionSlover::DiffusionSlover()
 {
@@ -19,11 +21,23 @@ DiffusionSlover::DiffusionSlover()
 
 ncnn::Mat DiffusionSlover::randn_4_64_64(int seed)
 {
+    std::vector<float> arr;
+    {
+        std::random_device rd{};
+        std::mt19937 gen{ rd() };
+        std::normal_distribution<float> d{0.0f, 1.0f};
+        arr.resize( 64*64*4 );
+        std::for_each( arr.begin(), arr.end(), [&]( float& x ){ x = d(gen); } );
+    }
+	ncnn::Mat x_mat(64, 64, 4, reinterpret_cast<void*>( arr.data() ) );
+	return x_mat.clone();
+#if 0
 	cv::Mat cv_x(cv::Size(64, 64), CV_32FC4);
 	cv::RNG rng(seed);
 	rng.fill(cv_x, cv::RNG::NORMAL, 0, 1);
 	ncnn::Mat x_mat(64, 64, 4, (void*)cv_x.data);
 	return x_mat.clone();
+#endif
 }
 
 ncnn::Mat DiffusionSlover::CFGDenoiser_CompVisDenoiser(ncnn::Mat& input, float sigma, ncnn::Mat cond, ncnn::Mat uncond)

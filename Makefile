@@ -1,5 +1,6 @@
 # tool macros
 CXX := g++
+#CXXFLAGS := -funsafe-math-optimizations -Ofast -flto=auto  -funroll-all-loops -pipe -march=native -std=c++20 -Wall -Wextra `pkg-config --cflags --libs opencv4`
 CXXFLAGS := -funsafe-math-optimizations -Ofast -flto=auto  -funroll-all-loops -pipe -march=native -std=c++20 -Wall -Wextra
 DBGFLAGS := -g
 CXXOBJFLAGS := $(CXXFLAGS) -c

@@ -15,10 +15,14 @@
 #include <ctime>
 #include <fstream>
 #include <cstdint>
+#include <numeric>
+
 using namespace std;
+
 
 static inline void save_ppm( std::uint8_t* data, int cols, int rows, char const* const file_name )
 {
+
     std::ofstream ofs{ file_name };
     {
         ofs << "P3\n";
@@ -28,7 +32,7 @@ static inline void save_ppm( std::uint8_t* data, int cols, int rows, char const*
         {
             for ( int c = 0; c < cols*3; ++c ) // RGB
             {
-                ofs << static_cast<unsigned long>(data[cols*r+c]) << " ";
+                ofs << static_cast<unsigned long>(data[cols*r*3+c]) << " ";
             }
             ofs << "\n";
         }
@@ -44,17 +48,6 @@ int main()
 {
 	int step, seed;
 	string positive_prompt, negative_prompt;
-
-	//cout << "------------------------------------------" << endl;
-	//cout << "[step]:"; cin >> step;
-	//cout << "[seed]:"; cin >> seed; if (seed <= 0) seed = (unsigned)time(NULL);
-	//getline(cin, positive_prompt);
-	//cout << "[positive prompt]:" << endl; getline(cin, positive_prompt);
-	//cout << "[negative prompt]:" << endl; getline(cin, negative_prompt);
-	//cout << "------------------------------------------" << endl;
-	//cout << "[step]:" << step << ", [seed]:" << seed << endl;
-	//cout << "[positive prompt]:" << positive_prompt << endl;
-	//cout << "[negative prompt]:" << negative_prompt << endl;
 
 	step = 15;
 	seed = 42;
@@ -77,17 +70,13 @@ int main()
 	ncnn::Mat x_samples_ddim = decode_slover.decode(sample);
 
 	cout << "----------------[save]--------------------" << endl;
-    #if 0
-	cv::Mat image(512, 512, CV_8UC3);
-	x_samples_ddim.to_pixels(image.data, ncnn::Mat::PIXEL_RGB2BGR);
-	cv::imwrite("result_" + to_string(step) + "_" + to_string(seed) + ".png", image);
-    #else
-    std::string const& file_name = std::string{"result_"} + to_string(step) + std::string{"_"} + to_string(seed) + std::string{".ppm"};
-    save_ppm( reinterpret_cast<std::uint8_t*>(x_samples_ddim.data), 512, 512, file_name.c_str() );
-    #endif
-
-
-
+    {
+        std::vector<std::uint8_t> buffer;
+        buffer.resize( 512*512*3 );
+        x_samples_ddim.to_pixels(buffer.data(), ncnn::Mat::PIXEL_RGB);
+        std::string const& file_name = std::string{"result_"} + to_string(step) + std::string{"_"} + to_string(seed) + std::string{".ppm"};
+        save_ppm( buffer.data(), 512, 512, file_name.c_str() );
+    }
 
 	cout << "----------------[close]-------------------" << endl;
 	return 0;

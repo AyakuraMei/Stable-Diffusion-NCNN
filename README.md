@@ -83,3 +83,22 @@ outout = in0 + onnx(x=in0 * c_in, t=in1, cc=in2) * c_out
 3. [stable-diffusion](https://github.com/CompVis/stable-diffusion)
 4. [k-diffusion](https://github.com/crowsonkb/k-diffusion)
 5. [stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
+
+
+
+## This is a public fork from [EdVince/Stable-Diffusion-NCNN](https://github.com/EdVince/Stable-Diffusion-NCNN)
+
+As I cannot push LFS object to a public fork, I re-uploaded this repo standalone.
+
+### Updates
++ Uploaded bin files to the repo taking the advantage of gitlfs
++ Removed opencv dependency
++ Clean the compiliation pipeline by providing a makefile.
+
+
+
+
+
+
+
+
